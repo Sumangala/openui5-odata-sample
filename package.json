@@ -1,0 +1,27 @@
+{
+  "name": "openui5-odata-sample",
+  "version": "0.0.0",
+  "description": "OpenUI5 odata sample application via Northwind Odata service.",
+  "main": "app/index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "OpenUI5",
+    "SAPUI5"
+  ],
+  "author": "mitsuruog <mitsuru.ogawa.jp@gmail.com> (http://blog.mitsuruog.info/)",
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-coffee": "~0.10.1",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-connect": "~0.5.0",
+    "time-grunt": "~0.2.0",
+    "connect-livereload": "~0.2.0",
+    "grunt-open": "~0.2.3",
+    "load-grunt-tasks": "~0.2.1",
+    "grunt-connect-proxy": "~0.1.8",
+    "grunt-contrib-jshint": "^0.10.0"
+  }
+}

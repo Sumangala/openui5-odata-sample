@@ -1,13 +1,16 @@
-jQuery.sap.require "sap.ui.core.format.DateFormat"
+jQuery.sap.declare "com.mitsuruog.openui5.odata.util.Formatter"
 
-jQuery.sap.declare "util.Formatter"
+com.mitsuruog.openui5.odata.util.Formatter = 
+	
+	uppercaseFirstChar: (str) ->
+		str.charAt().toUpperCase() + str.slice(1)
 
-dateFormatter = sap.ui.core.format.DateFormat.getDateInstance
-  pattern: "yyyy/MM/dd"  
+	discontinuedStatusState: (discontinuedDate) ->
+		if discontinuedDate then "Error" else "None"
 
-util.Formatter = 
-  formatDate: (val) ->
-    if val
-      dateFormatter.format val
-    else
-      ""
+	discontinuedStatusValue: (discontinuedDate) ->
+		if discontinuedDate then "Discontinued" else ""
+
+	currencyValue: (currency) ->
+		parseFloat(currency).toFixed(2)
+ 

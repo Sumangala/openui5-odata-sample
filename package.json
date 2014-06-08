@@ -13,15 +13,19 @@
   "author": "mitsuruog <mitsuru.ogawa.jp@gmail.com> (http://blog.mitsuruog.info/)",
   "license": "MIT",
   "devDependencies": {
-    "grunt": "~0.4.2",
+    "grunt": "~0.4.1",
+    "grunt-contrib-copy": "~0.4.1",
     "grunt-contrib-coffee": "~0.10.1",
-    "grunt-contrib-watch": "~0.5.3",
-    "grunt-contrib-connect": "~0.5.0",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-jshint": "~0.7.0",
+    "grunt-contrib-connect": "~0.7.1",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-watch": "~0.5.2",
+    "load-grunt-tasks": "~0.2.0",
     "time-grunt": "~0.2.0",
     "connect-livereload": "~0.2.0",
     "grunt-open": "~0.2.3",
-    "load-grunt-tasks": "~0.2.1",
-    "grunt-connect-proxy": "~0.1.8",
-    "grunt-contrib-jshint": "^0.10.0"
+    "jshint-stylish": "~0.1.3",
+    "grunt-connect-proxy": "~0.1.10"
   }
 }

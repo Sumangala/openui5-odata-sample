@@ -1,3 +1,5 @@
+// Generated on 2014-06-06 using
+// generator-sapui5 0.0.1
 'use strict';
 
 var LIVERELOAD_PORT = 35729;
@@ -24,7 +26,7 @@ module.exports = function(grunt) {
   require('time-grunt')(grunt);
 
   // configurable paths
-  var Config = {
+  var yeomanConfig = {
     coffee: 'coffee',
     app: 'app'
   };
@@ -32,40 +34,61 @@ module.exports = function(grunt) {
   // Define the configuration for all the tasks
   grunt.initConfig({
 
-    pkg: grunt.file.readJSON('package.json'),
-    config: Config,
+    yeoman: yeomanConfig,
     watch: {
       options: {
         nospawn: true,
         livereload: true
       },
       coffee: {
+        files: ['<%= yeoman.coffee %>/**/*.coffee'],
+        tasks: ['coffee:dist']
+      },
+      livereload: {
+        options: {
+          livereload: LIVERELOAD_PORT
+        },
         files: [
-          '<%= config.coffee %>/**/*.coffee'
-        ],
-        tasks: ['coffee']
+          '<%= yeoman.app %>/*.html',
+          '<%= yeoman.app %>/css/**/*.css',
+          '<%= yeoman.app %>/**/*.js'
+        ]
+      }
+    },
+
+    coffee: {
+      dist: {
+        files: [{
+          expand: true,
+          flatten: false,
+          cwd: '<%= yeoman.coffee %>',
+          src: ['**/*.coffee'],
+          dest: '<%= yeoman.app %>',
+          ext: function(ext) {
+            return ext.replace(/coffee$/, 'js');
+          }
+        }]
       }
     },
 
     connect: {
       options: {
+        port: SERVER_PORT,
         // change this to '0.0.0.0' to access the server from outside
         hostname: 'localhost'
       },
       proxies: [{
         context: '/V2',
         host: "services.odata.org",
-        https: false,
         changeOrigin: true
       }],
-      demo: {
+      livereload: {
         options: {
-          port: SERVER_PORT,
           middleware: function(connect) {
             return [
               require('grunt-connect-proxy/lib/utils').proxyRequest,
               lrSnippet,
-              mountFolder(connect, Config.app)
+              mountFolder(connect, yeomanConfig.app)
             ];
           }
         }
@@ -73,22 +96,9 @@ module.exports = function(grunt) {
     },
 
     open: {
-      path: 'http://localhost:' + SERVER_PORT
-    },
-
-    coffee: {
-
-      app: {
-        expand: true,
-        flatten: false,
-        cwd: '<%= config.coffee %>',
-        src: ['**/*.coffee'],
-        dest: '<%= config.app %>',
-        ext: function(ext) {
-          return ext.replace(/coffee$/, 'js');
-        }
+      server: {
+        path: 'http://localhost:' + SERVER_PORT
       }
-
     }
 
   });
@@ -97,8 +107,8 @@ module.exports = function(grunt) {
 
     grunt.task.run([
       'configureProxies',
-      'connect',
-      // 'open',
+      'connect:livereload',
+      'open:server',
       'watch'
     ]);
   });
@@ -106,5 +116,5 @@ module.exports = function(grunt) {
   grunt.registerTask('default', [
     'server'
   ]);
-
+  
 };

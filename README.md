@@ -9,4 +9,4 @@ OpenUI5とNorthwindが提供するODataサービスを組み合わせた簡単�
 
 [OpenUi5](http://sap.github.io/openui5/)
 
-[Northwind Odata Service](http://services.odata.org/V3/(S(xhn5u4jlacenfhxdur5bje5f))/OData/OData.svc/)
+[Northwind Odata Service](http://services.odata.org/V2/(S(mitsuruogodata))/OData/OData.svc/)

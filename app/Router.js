@@ -6,10 +6,6 @@
   jQuery.sap.declare("com.mitsuruog.openui5.odata.Router");
 
   com.mitsuruog.openui5.odata.Router = {
-    constructor: function() {
-      sap.ui.core.routing.Router.apply(this, arguments);
-      return this._routeMatchedHandler = new sap.m.routing.RouteMatchedHandler(this);
-    },
 
     /*
      * to extend the router with a nav to method that
@@ -49,21 +45,14 @@
       app = this._findAppConteiner(currentView);
       return app[cackMethod]();
     },
-    destroy: function() {
-      sap.ui.core.routing.Router.prototype.destroy.apply(this, arguments);
-      return this._routeMatchedHandler.destroy();
-    },
     _findAppConteiner: function(control) {
-      var conteinerName;
+      var appConteiner, conteinerName;
       conteinerName = "appConteiner";
-      if (control instanceof sap.ui.core.mvc.View && control.byId(conteinerName)) {
-        return control.byId(conteinerName);
+      appConteiner = sap.ui.getCore().byId(conteinerName);
+      if (appConteiner && appConteiner.getMetadata()._sClassName === "sap.m.SplitApp") {
+        return appConteiner;
       } else {
-        if (control.getParent()) {
-          return this._findAppConteiner(control.getParent(), conteinerName);
-        } else {
-          return null;
-        }
+        return null;
       }
     }
   };

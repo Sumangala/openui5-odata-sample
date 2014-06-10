@@ -30,13 +30,12 @@
           viewPath: "com.mitsuruog.openui5.odata.view",
           targetControl: "appConteiner",
           targetAggregation: "detailPages",
-          clearTarget: false,
-          transition: "slide"
+          clearTarget: false
         },
         routes: [
           {
             pattern: "",
-            name: "main",
+            name: "master",
             view: "Master",
             targetAggregation: "masterPages",
             subroutes: [
@@ -62,7 +61,9 @@
       }
     },
     init: function() {
-      var config, deviceModel, domainModel, i18nModel, rootPath, serviceUrl;
+      var config, deviceModel, domainModel, i18nModel, rootPath, router, serviceUrl;
+      jQuery.sap.require("sap.m.routing.RouteMatchedHandler");
+      jQuery.sap.require("com.mitsuruog.openui5.odata.Router");
       sap.ui.core.UIComponent.prototype.init.apply(this, arguments);
       config = this.getMetadata().getConfig();
       rootPath = jQuery.sap.getModulePath("com.mitsuruog.openui5.odata");
@@ -83,7 +84,19 @@
       });
       deviceModel.setDefaultBindingMode("OneWay");
       this.setModel(deviceModel, "device");
-      return this.getRouter().initialize();
+      router = this.getRouter();
+      router.navToWithoutHash = com.mitsuruog.openui5.odata.Router.navToWithoutHash;
+      router.navBack = com.mitsuruog.openui5.odata.Router.navBack;
+      router.backWithoutHash = com.mitsuruog.openui5.odata.Router.backWithoutHash;
+      router._findAppConteiner = com.mitsuruog.openui5.odata.Router._findAppConteiner;
+      router.initialize();
+      return this.routeHandler = new sap.m.routing.RouteMatchedHandler(router);
+    },
+    destroy: function() {
+      if (this.routeHandler) {
+        this.routeHandler.destroy();
+      }
+      return sap.ui.core.UIComponent.prototype.destroy.apply(this, arguments);
     }
   });
 

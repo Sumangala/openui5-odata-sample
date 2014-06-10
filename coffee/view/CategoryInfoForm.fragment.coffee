@@ -22,7 +22,7 @@ sap.ui.jsfragment "com.mitsuruog.openui5.odata.view.CategoryInfoForm",
         new sap.m.Label
           text: "{i18n>categoryInfoName}"
         new sap.m.Text
-          text: "{Address/Name}"
+          text: "{Name}"
       ]
 
     grid = new sap.ui.layout.Grid

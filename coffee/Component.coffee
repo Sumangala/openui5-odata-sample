@@ -30,10 +30,10 @@ sap.ui.core.UIComponent.extend "com.mitsuruog.openui5.odata.Component",
         targetControl: "appConteiner"
         targetAggregation: "detailPages"
         clearTarget: false
-        transition: "slide"
+        # transition: "show"
       routes: [{
         pattern: ""
-        name: "main"
+        name: "master"
         view: "Master"
         targetAggregation: "masterPages"
         subroutes: [{
@@ -53,6 +53,9 @@ sap.ui.core.UIComponent.extend "com.mitsuruog.openui5.odata.Component",
       }]
 
   init: ->
+    jQuery.sap.require "sap.m.routing.RouteMatchedHandler"
+    jQuery.sap.require "com.mitsuruog.openui5.odata.Router"
+
     sap.ui.core.UIComponent.prototype.init.apply @, arguments
     config = @getMetadata().getConfig()
 
@@ -82,4 +85,16 @@ sap.ui.core.UIComponent.extend "com.mitsuruog.openui5.odata.Component",
     @setModel deviceModel, "device"
 
     #router初期化
-    @getRouter().initialize()
+    router = @getRouter()
+    router.navToWithoutHash = com.mitsuruog.openui5.odata.Router.navToWithoutHash
+    router.navBack = com.mitsuruog.openui5.odata.Router.navBack
+    router.backWithoutHash = com.mitsuruog.openui5.odata.Router.backWithoutHash
+    router._findAppConteiner = com.mitsuruog.openui5.odata.Router._findAppConteiner
+
+    router.initialize()
+    @routeHandler = new sap.m.routing.RouteMatchedHandler router
+
+  destroy: ->
+    if @routeHandler
+      @routeHandler.destroy()
+    sap.ui.core.UIComponent.prototype.destroy.apply @, arguments

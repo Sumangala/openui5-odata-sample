@@ -44,7 +44,7 @@ sap.ui.jsview "com.mitsuruog.openui5.odata.view.Master",
         new sap.m.Button
           icon: "sap-icon://add"
           tooltip: "{i18n>masterFooterAddButtonTooltip}"
-          press: [oController.onAddProduct]
+          press: [oController.onAddProduct, oController]
       ] 
 
     @page.setSubHeader subHeader

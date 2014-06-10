@@ -6,14 +6,22 @@ com.mitsuruog.openui5.odata.util.Controller.extend "com.mitsuruog.openui5.odata.
     #[MEMO]phoneの場合はこの画面を表示する必要がないでしょ・・・っていう設計コンセプトみたい
     return if sap.ui.Device.system.phone
 
+    @list = @getView().byId "list"
     @getRouter().attachRouteMatched @onRouteMatched, @
 
+    @updateFinishedDeferred = jQuery.Deferred()
+    @list.attachEventOnce "updateFinished", () ->
+      @updateFinishedDeferred.resolve()
+    , @
+
   onRouteMatched: (evt, param) ->
-    unless evt.getParameter("name") is "Master"
-      return
+    @routeName = evt.getParameter "name"
+    @routeParameters = evt.getParameter "arguments"
+
+    jQuery.when(@updateFinishedDeferred).then(jQuery.proxy(@_listLoaded, @))
 
     #Desktopサイズの場合はDetailViewをロードする
-    @getRouter().myNavToWithoutHash @getView(), "com.mitsuruog.openui5.odata.view.Detail"
+    @getRouter().navToWithoutHash @getView(), "com.mitsuruog.openui5.odata.view.Detail"
 
     # @waitForInitialListLoading ->
     #   this.selectFirstItem();
@@ -35,6 +43,9 @@ com.mitsuruog.openui5.odata.util.Controller.extend "com.mitsuruog.openui5.odata.
     selectItem = evt.getParameter("listItem") or evt.getSource()
     @showDetail selectItem
 
+  onAddProduct: (evt) ->
+    @getRouter().navToWithoutHash @view, "com.mitsuruog.openui5.odata.view.AddProduct"
+
   showDetail: (selectItem) ->
     #[MEMO]phoneの場合のみhistoryに追加する
     isHistoryReplace = if jQuery.device.is.phone then false else true
@@ -47,3 +58,23 @@ com.mitsuruog.openui5.odata.util.Controller.extend "com.mitsuruog.openui5.odata.
       tab: "supplier"
     , isHistoryReplace
 
+  _listLoaded: ->
+    switch @routeName
+      when "master"
+        @_selectDetail()
+      when "product"
+        product = @routeParameters.product
+        items = @list.getItems()
+
+        for item, i in items
+          if item.getBindingContext().getPath() is "/#{product}"
+            @list.setSelectedItem item, true
+            break
+
+  _selectDetail: ->
+    return if sap.ui.Device.system.phone
+
+    items = @list.getItems()
+    if items.length and not @list.getSelectedItem()
+        @list.setSelectedItem items[0], true
+        @showDetail items[0]

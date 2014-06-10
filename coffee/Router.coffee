@@ -5,10 +5,6 @@ jQuery.sap.declare "com.mitsuruog.openui5.odata.Router"
 
 com.mitsuruog.openui5.odata.Router = 
 
-  constructor: ->
-    sap.ui.core.routing.Router.apply @, arguments
-    @_routeMatchedHandler = new sap.m.routing.RouteMatchedHandler @
-
   ###
    * to extend the router with a nav to method that
    * does not write hashes but load the views properly
@@ -36,16 +32,10 @@ com.mitsuruog.openui5.odata.Router =
     app = @_findAppConteiner(currentView)
     app[cackMethod]()
 
-  destroy: ->
-    sap.ui.core.routing.Router.prototype.destroy.apply @, arguments
-    @_routeMatchedHandler.destroy()
-
   _findAppConteiner: (control) ->
     conteinerName = "appConteiner"
-    if control instanceof sap.ui.core.mvc.View and control.byId conteinerName
-      control.byId conteinerName
+    appConteiner = sap.ui.getCore().byId conteinerName
+    if appConteiner and appConteiner.getMetadata()._sClassName is "sap.m.SplitApp"
+      appConteiner
     else
-      if control.getParent()
-        @_findAppConteiner control.getParent(), conteinerName
-      else
-        null
+      null

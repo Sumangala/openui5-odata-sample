@@ -22,7 +22,7 @@
           }), new sap.m.Label({
             text: "{i18n>categoryInfoName}"
           }), new sap.m.Text({
-            text: "{Address/Name}"
+            text: "{Name}"
           })
         ]
       });

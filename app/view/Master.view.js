@@ -48,7 +48,7 @@
           new sap.m.Button({
             icon: "sap-icon://add",
             tooltip: "{i18n>masterFooterAddButtonTooltip}",
-            press: [oController.onAddProduct]
+            press: [oController.onAddProduct, oController]
           })
         ]
       });
